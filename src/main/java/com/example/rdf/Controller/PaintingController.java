@@ -55,7 +55,9 @@ public class PaintingController {
 
     @PutMapping("update")
     public Painting updatePainting(@RequestBody Painting painting) {
-        // TODO
+        if (paintingService.deletePainting(painting.getTitle()) != null) {
+            return paintingService.addPainting(painting);
+        }
         return null;
     }
 

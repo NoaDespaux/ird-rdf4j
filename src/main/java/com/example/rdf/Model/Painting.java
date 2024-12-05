@@ -14,6 +14,7 @@ public class Painting {
     private String technique;
     private String artistId;
 
+    public Painting() {}
     public Painting(String title, String technique, String artistId) {
         this.title = title;
         this.technique = technique;

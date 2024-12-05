@@ -4,10 +4,7 @@ import com.example.rdf.Model.Artist;
 import com.example.rdf.Model.EX;
 import com.example.rdf.Model.Painting;
 import lombok.Data;
-import org.eclipse.rdf4j.model.BNode;
-import org.eclipse.rdf4j.model.Model;
-import org.eclipse.rdf4j.model.Statement;
-import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.model.*;
 import org.eclipse.rdf4j.model.util.ModelBuilder;
 import org.eclipse.rdf4j.model.util.Values;
 import org.eclipse.rdf4j.model.vocabulary.FOAF;
@@ -29,7 +26,7 @@ import java.util.List;
 @Data
 public class PaintingService {
 
-    public Painting addPainting( Painting painting) {
+    public Painting addPainting(Painting painting) {
         RemoteRepositoryManager server = RemoteRepositoryManager.getInstance("http://localhost:8080/rdf4j-server/");
         try (RepositoryConnection connection = server.getRepository("Test").getConnection()) {
             connection.begin();
@@ -151,12 +148,15 @@ public class PaintingService {
         try (RepositoryConnection connection = server.getRepository("Test").getConnection()) {
             connection.begin();
             try {
-                RepositoryResult<Statement> statements = connection.getStatements(Values.iri(painting.getArtistId()), EX.creator, null);
-                for (Statement statement: statements) {
-                    if (statement.getObject().equals(connection.getStatements(null, EX.title, Values.literal(paintingId)).next().getSubject())) {
-                        connection.remove(statement);
-                        connection.remove(connection.getStatements(null, EX.title, Values.literal(paintingId)).next());
-                        connection.remove(connection.getStatements(null, EX.technique, Values.literal(painting.getTechnique())).next());
+                RepositoryResult<Statement> statementsFromArtist = connection.getStatements(Values.iri(painting.getArtistId()), EX.creator, null);
+                for (Statement statementFromArtist: statementsFromArtist) {
+                    if (statementFromArtist.getObject().equals(connection.getStatements(null, EX.title, Values.literal(paintingId)).next().getSubject())) {
+                        List<Statement> allStatements = connection.getStatements(null, null, null).stream().toList();
+                        for (Statement statement: allStatements) {
+                            if (statement.getObject().equals(statementFromArtist.getObject()) || statement.getSubject().equals(statementFromArtist.getObject())) {
+                                connection.remove(statement);
+                            }
+                        }
                         connection.commit();
                         return ResponseEntity.ok("Painting " + paintingId + " successfully deleted");
                     }
