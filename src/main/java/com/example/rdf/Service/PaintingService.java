@@ -151,17 +151,6 @@ public class PaintingService {
         try (RepositoryConnection connection = server.getRepository("Test").getConnection()) {
             connection.begin();
             try {
-                /*
-                String updateString = "PREFIX ex: <http://example.org/> \n"
-                        + "DELETE DATA { \n"
-                        + painting.getArtistId() + " ex:creator " + painting.getId() + "; \n"
-                        + painting.getId() + " ex:title \"" + painting.getTitle() + "\"; \n"
-                        + painting.getId() + " ex:technique \"" + painting.getTechnique() + "\"; \n"
-                        + "}";
-
-                Update update = connection.prepareUpdate(updateString);
-                update.execute();
-                 */
                 RepositoryResult<Statement> statements = connection.getStatements(Values.iri(painting.getArtistId()), EX.creator, null);
                 for (Statement statement: statements) {
                     if (statement.getObject().equals(connection.getStatements(null, EX.title, Values.literal(paintingId)).next().getSubject())) {
