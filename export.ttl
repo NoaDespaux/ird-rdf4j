@@ -1,0 +1,20 @@
+@prefix rdf4j: <http://rdf4j.org/schema/rdf4j#> .
+@prefix ex: <http://example.org/> .
+
+ex:Picasso a ex:Artist;
+  <http://xmlns.com/foaf/0.1/firstName> "Pablo";
+  ex:creator _:b13e8e957ccd480095fb17d4a46f0f3e3 .
+
+ex:Dali a ex:Artist;
+  <http://xmlns.com/foaf/0.1/firstName> "Sauveur" .
+
+ex:Van_Gogh a ex:Artist;
+  <http://xmlns.com/foaf/0.1/firstName> "patrick";
+  ex:creator _:34e9f66802594247aaaf16d9fc7ae1d61 .
+
+_:34e9f66802594247aaaf16d9fc7ae1d61 ex:title "Starry_Night" .
+
+_:2cdab2a5522b4786a7c418687d28b2fc1 ex:technique "Oil_on_canvas" .
+
+_:b13e8e957ccd480095fb17d4a46f0f3e3 ex:title "Les_Demoiselles_D_Avignon";
+  ex:technique "Oil_on_canvas" .
