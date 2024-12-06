@@ -3,18 +3,20 @@
 
 ex:Picasso a ex:Artist;
   <http://xmlns.com/foaf/0.1/firstName> "Pablo";
-  ex:creator _:b13e8e957ccd480095fb17d4a46f0f3e3 .
+  ex:creator _:b13e8e957ccd480095fb17d4a46f0f3e3, _:c3d05cb882b2495ca5827edd39f397141 .
 
 ex:Dali a ex:Artist;
-  <http://xmlns.com/foaf/0.1/firstName> "Sauveur" .
+  <http://xmlns.com/foaf/0.1/firstName> "Salvador" .
 
 ex:Van_Gogh a ex:Artist;
-  <http://xmlns.com/foaf/0.1/firstName> "patrick";
-  ex:creator _:34e9f66802594247aaaf16d9fc7ae1d61 .
-
-_:34e9f66802594247aaaf16d9fc7ae1d61 ex:title "Starry_Night" .
-
-_:2cdab2a5522b4786a7c418687d28b2fc1 ex:technique "Oil_on_canvas" .
+  <http://xmlns.com/foaf/0.1/firstName> "Vincent";
+  ex:creator _:510830da94384ed992ea150e5d08fedb1 .
 
 _:b13e8e957ccd480095fb17d4a46f0f3e3 ex:title "Les_Demoiselles_D_Avignon";
+  ex:technique "Oil_on_canvas" .
+
+_:510830da94384ed992ea150e5d08fedb1 ex:title "Starry_Night";
+  ex:technique "Oil_on_canvas" .
+
+_:c3d05cb882b2495ca5827edd39f397141 ex:title "Guernica";
   ex:technique "Oil_on_canvas" .
