@@ -92,7 +92,7 @@ public class ArtistService {
         return null;
     }
 
-    public Artist addArtist(Artist artist) {
+    public ResponseEntity<Artist> addArtist(Artist artist) {
         RemoteRepositoryManager server = RemoteRepositoryManager.getInstance("http://localhost:8080/rdf4j-server/");
         try (RepositoryConnection connection = server.getRepository("Test").getConnection()) {
             connection.begin();
@@ -105,18 +105,19 @@ public class ArtistService {
                         .build();
                 connection.add(model);
                 connection.commit();
-                return artist;
+                return ResponseEntity.ok(artist);
             } catch (RepositoryException e) {
                 e.printStackTrace();
                 connection.rollback();
+                return ResponseEntity.badRequest().build();
             }
         } catch (Exception e) {
             e.printStackTrace();
+            return ResponseEntity.badRequest().build();
         }
-        return null;
     }
 
-    public Artist updateArtist(Artist artist) {
+    public ResponseEntity<Artist> updateArtist(Artist artist) {
         RemoteRepositoryManager server = RemoteRepositoryManager.getInstance("http://localhost:8080/rdf4j-server/");
         try (RepositoryConnection connection = server.getRepository("Test").getConnection()) {
             connection.begin();
@@ -135,17 +136,23 @@ public class ArtistService {
                 Update update = connection.prepareUpdate(updateString);
                 update.execute();
                 connection.commit();
-                return artist;
+                return ResponseEntity.ok(artist);
             } catch (RepositoryException e) {
                 connection.rollback();
                 e.printStackTrace();
+                return ResponseEntity.badRequest().build();
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().build();
         }
-        return null;
     }
 
     public ResponseEntity<String> deleteArtist(String artistId) {
         Artist artist = getArtistById(artistId);
+        if (artist == null) {
+            return ResponseEntity.notFound().build();
+        }
         RemoteRepositoryManager server = RemoteRepositoryManager.getInstance("http://localhost:8080/rdf4j-server/");
         try (RepositoryConnection connection = server.getRepository("Test").getConnection()) {
             connection.begin();

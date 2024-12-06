@@ -38,12 +38,12 @@ public class ArtistController {
      *               }
      */
     @PostMapping("add")
-    public Artist addArtist(@RequestBody Artist artist) {
+    public ResponseEntity<Artist> addArtist(@RequestBody Artist artist) {
         return artistService.addArtist(artist);
     }
 
     @PutMapping("update")
-    public Artist updateArtist(@RequestBody Artist artist) {
+    public ResponseEntity<Artist> updateArtist(@RequestBody Artist artist) {
         if (artistService.deleteArtist(artist.getLastName()) != null) {
             return artistService.addArtist(artist);
         }
@@ -51,7 +51,7 @@ public class ArtistController {
     }
 
     @PutMapping("updateSPARQL")
-    public Artist updateArtistSPARQL(@RequestBody Artist artist) {
+    public ResponseEntity<Artist> updateArtistSPARQL(@RequestBody Artist artist) {
         return artistService.updateArtist(artist);
     }
 

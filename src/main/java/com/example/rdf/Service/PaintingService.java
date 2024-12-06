@@ -24,7 +24,7 @@ import java.util.List;
 @Data
 public class PaintingService {
 
-    public Painting addPainting(Painting painting) {
+    public ResponseEntity<Painting> addPainting(Painting painting) {
         RemoteRepositoryManager server = RemoteRepositoryManager.getInstance("http://localhost:8080/rdf4j-server/");
         try (RepositoryConnection connection = server.getRepository("Test").getConnection()) {
             connection.begin();
@@ -40,18 +40,19 @@ public class PaintingService {
                         .build();
                 connection.add(model);
                 connection.commit();
-                return painting;
+                return ResponseEntity.ok(painting);
             } catch (RepositoryException e) {
                 e.printStackTrace();
                 connection.rollback();
+                return ResponseEntity.badRequest().build();
             }
         } catch (Exception e) {
             e.printStackTrace();
+            return ResponseEntity.badRequest().build();
         }
-        return null;
     }
 
-    public List<Painting> getPaintingsFromArtist(String artistId) {
+    public ResponseEntity<List<Painting>> getPaintingsFromArtist(String artistId) {
         RemoteRepositoryManager server = RemoteRepositoryManager.getInstance("http://localhost:8080/rdf4j-server/");
         try (RepositoryConnection connection = server.getRepository("Test").getConnection()) {
             try {
@@ -65,6 +66,9 @@ public class PaintingService {
 
                 TupleQuery query = connection.prepareTupleQuery(queryString);
                 try (TupleQueryResult result = query.evaluate()) {
+                    if (!result.hasNext()) {
+                        return ResponseEntity.notFound().build();
+                    }
                     List<Painting> paintings = new ArrayList<>();
                     for (BindingSet solution : result) {
                         paintings.add(new Painting(
@@ -72,7 +76,7 @@ public class PaintingService {
                                 solution.getValue("technique").toString().replace("\"", ""),
                                 artistId));
                     }
-                    return paintings;
+                    return ResponseEntity.ok(paintings);
                 }
             } catch (RepositoryException e) {
                 e.printStackTrace();
@@ -111,7 +115,7 @@ public class PaintingService {
         return null;
     }
 
-    public Painting getPaintingByTitle(String title) {
+    private Painting getPaintingByTitle(String title) {
         RemoteRepositoryManager server = RemoteRepositoryManager.getInstance("http://localhost:8080/rdf4j-server/");
         try (RepositoryConnection connection = server.getRepository("Test").getConnection()) {
             try {
@@ -140,7 +144,7 @@ public class PaintingService {
         return null;
     }
 
-    public Painting updatePainting(Painting newPainting) {
+    public ResponseEntity<Painting> updatePainting(Painting newPainting) {
         RemoteRepositoryManager server = RemoteRepositoryManager.getInstance("http://localhost:8080/rdf4j-server/");
         try (RepositoryConnection connection = server.getRepository("Test").getConnection()) {
             Painting painting = getPaintingByTitle(newPainting.getTitle());
@@ -164,17 +168,23 @@ public class PaintingService {
                 Update update = connection.prepareUpdate(updateString);
                 update.execute();
                 connection.commit();
-                return painting;
+                return ResponseEntity.ok(painting);
             } catch (RepositoryException e) {
                 connection.rollback();
                 e.printStackTrace();
+                return ResponseEntity.badRequest().build();
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().build();
         }
-        return null;
     }
 
     public ResponseEntity<String> deletePainting(String paintingId) {
         Painting painting = getPaintingByTitle(paintingId);
+        if (painting == null) {
+            return ResponseEntity.notFound().build();
+        }
         RemoteRepositoryManager server = RemoteRepositoryManager.getInstance("http://localhost:8080/rdf4j-server/");
         try (RepositoryConnection connection = server.getRepository("Test").getConnection()) {
             connection.begin();

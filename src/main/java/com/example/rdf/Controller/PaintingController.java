@@ -36,7 +36,7 @@ public class PaintingController {
     }
 
     @GetMapping("getFromArtist")
-    public List<Painting> getPaintingsFromArtist(@RequestParam("artistId") String artistId) {
+    public ResponseEntity<List<Painting>> getPaintingsFromArtist(@RequestParam("artistId") String artistId) {
         return paintingService.getPaintingsFromArtist(artistId);
     }
 
@@ -49,12 +49,12 @@ public class PaintingController {
      *               }
      */
     @PostMapping("add")
-    public Painting addPainting(@RequestBody Painting painting) {
+    public ResponseEntity<Painting> addPainting(@RequestBody Painting painting) {
         return paintingService.addPainting(painting);
     }
 
     @PutMapping("update")
-    public Painting updatePainting(@RequestBody Painting painting) {
+    public ResponseEntity<Painting> updatePainting(@RequestBody Painting painting) {
         if (paintingService.deletePainting(painting.getTitle()) != null) {
             return paintingService.addPainting(painting);
         }
@@ -62,7 +62,7 @@ public class PaintingController {
     }
 
     @PutMapping("updateSPARQL")
-    public Painting updateSPARQL(@RequestBody Painting painting) {
+    public ResponseEntity<Painting> updateSPARQL(@RequestBody Painting painting) {
         return paintingService.updatePainting(painting);
     }
 
