@@ -1,0 +1,265 @@
+{
+	"info": {
+		"_postman_id": "4cd487ae-3d36-4b28-bb7a-44d3ef1fb1e6",
+		"name": "RDF4J Test API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "40253691"
+	},
+	"item": [
+		{
+			"name": "Painting",
+			"item": [
+				{
+					"name": "Get All Paintings",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{path}}/painting/all",
+							"host": [
+								"{{path}}"
+							],
+							"path": [
+								"painting",
+								"all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Painting: La Pie",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"La_Pie\",\n  \"technique\": \"Oil_on_canvas\",\n  \"artistId\": \"Monet\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{path}}/painting/add",
+							"host": [
+								"{{path}}"
+							],
+							"path": [
+								"painting",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Painting: Aquarelle",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"La_Pie\",\n  \"technique\": \"Aquarelle\",\n  \"artistId\": \"Van_Gogh\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{path}}/painting/updateSPARQL",
+							"host": [
+								"{{path}}"
+							],
+							"path": [
+								"painting",
+								"updateSPARQL"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Painting: La Pie",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{path}}/painting/delete?paintingId=La_Pie",
+							"host": [
+								"{{path}}"
+							],
+							"path": [
+								"painting",
+								"delete"
+							],
+							"query": [
+								{
+									"key": "paintingId",
+									"value": "La_Pie"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Paintings From Artist: Van_Gogh",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{path}}/painting/getFromArtist?artistId=Van_Gogh",
+							"host": [
+								"{{path}}"
+							],
+							"path": [
+								"painting",
+								"getFromArtist"
+							],
+							"query": [
+								{
+									"key": "artistId",
+									"value": "Van_Gogh"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Artist",
+			"item": [
+				{
+					"name": "Get All Artists",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{path}}/artist/all",
+							"host": [
+								"{{path}}"
+							],
+							"path": [
+								"artist",
+								"all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Artist: Clde Monet",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"lastName\": \"Monet\",\n  \"firstName\": \"Clde\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{path}}/artist/add",
+							"host": [
+								"{{path}}"
+							],
+							"path": [
+								"artist",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Artist: Claude Monet",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"lastName\": \"Monet\",\n  \"firstName\": \"Claude\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{path}}/artist/updateSPARQL",
+							"host": [
+								"{{path}}"
+							],
+							"path": [
+								"artist",
+								"updateSPARQL"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Artist: Monet",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{path}}/artist/delete?artistId=Monet",
+							"host": [
+								"{{path}}"
+							],
+							"path": [
+								"artist",
+								"delete"
+							],
+							"query": [
+								{
+									"key": "artistId",
+									"value": "Monet"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "path",
+			"value": "http://localhost:8181",
+			"type": "string"
+		}
+	]
+}
