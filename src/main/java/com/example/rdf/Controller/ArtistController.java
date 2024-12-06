@@ -52,8 +52,7 @@ public class ArtistController {
 
     @PutMapping("updateSPARQL")
     public Artist updateArtistSPARQL(@RequestBody Artist artist) {
-        // TODO
-        return null;
+        return artistService.updateArtist(artist);
     }
 
     @DeleteMapping("delete")

@@ -61,6 +61,11 @@ public class PaintingController {
         return null;
     }
 
+    @PutMapping("updateSPARQL")
+    public Painting updateSPARQL(@RequestBody Painting painting) {
+        return paintingService.updatePainting(painting);
+    }
+
     @DeleteMapping("delete")
     public ResponseEntity<String> deletePainting(@RequestParam("paintingId") String paintingId) {
         return paintingService.deletePainting(paintingId);

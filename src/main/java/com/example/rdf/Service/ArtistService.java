@@ -116,6 +116,34 @@ public class ArtistService {
         return null;
     }
 
+    public Artist updateArtist(Artist artist) {
+        RemoteRepositoryManager server = RemoteRepositoryManager.getInstance("http://localhost:8080/rdf4j-server/");
+        try (RepositoryConnection connection = server.getRepository("Test").getConnection()) {
+            connection.begin();
+            try {
+                String updateString = "PREFIX ex: <http://example.org/>\n"
+                        + "PREFIX foaf: <" + FOAF.NAMESPACE + ">\n"
+                        + "DELETE {\n"
+                        + "ex:" + artist.getLastName() + " foaf:firstName ?firstName.\n"
+                        + "}\n"
+                        + "INSERT {\n"
+                        + "ex:" + artist.getLastName() + " foaf:firstName \"" + artist.getFirstName() + "\".\n"
+                        + "}\n"
+                        + "WHERE {\n"
+                        + "ex:" + artist.getLastName() + " foaf:firstName ?firstName.\n"
+                        + "}";
+                Update update = connection.prepareUpdate(updateString);
+                update.execute();
+                connection.commit();
+                return artist;
+            } catch (RepositoryException e) {
+                connection.rollback();
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
     public ResponseEntity<String> deleteArtist(String artistId) {
         Artist artist = getArtistById(artistId);
         RemoteRepositoryManager server = RemoteRepositoryManager.getInstance("http://localhost:8080/rdf4j-server/");
